@@ -6,7 +6,7 @@ export const api = {
         const response = await fetch(API_BASE_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ details, overdraftLimit: parseFloat(limit) })
+            body: JSON.stringify({ details, limit: parseFloat(limit) })
         });
         if (!response.ok) throw new Error('Failed to create account');
         return response.json();

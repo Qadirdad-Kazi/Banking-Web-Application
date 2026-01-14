@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 
 @Entity
+@Table(name = "transaction_log")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

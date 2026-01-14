@@ -5,17 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "accounts")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String accNum;
 
     @Embedded
-    @Embedded
     private CustomerDetails details; // Mapped from "details : Details"
 
     private Double balance;
-    private Double limit; // Mapped from "limit : Real"
+    @Column(name = "overdraft_limit")
+    private Double limit; // Maps to Reald from "limit : Real"
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Transaction> transactions = new ArrayList<>();
