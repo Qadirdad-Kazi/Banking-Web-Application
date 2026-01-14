@@ -1,0 +1,40 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+.classpath
+.project
+.settings
+.idea
+*.iml
+.DS_Store
+### STS ###
+.apt_generated
+.factorypath
+.springBeans
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+### VS Code ###
+.vscode/
+
+# Node
+node_modules/
+dist/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
