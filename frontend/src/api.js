@@ -1,5 +1,19 @@
 const API_BASE_URL = "http://localhost:8080/api/accounts";
 
+const handleError = async (response, defaultMsg) => {
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || defaultMsg);
+    } catch (e) {
+        // If parsing fails (not JSON) or extracting message fails, use text or default
+        if (e.message && e.message !== defaultMsg && e.message !== "Unexpected end of JSON input" && !e.message.includes("is not valid JSON")) {
+            throw e; // It was the error from above
+        }
+        const text = await response.text();
+        throw new Error(text || defaultMsg);
+    }
+};
+
 export const api = {
     // Admin
     createAccount: async (details, limit) => {
@@ -8,7 +22,7 @@ export const api = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ details, limit: parseFloat(limit) })
         });
-        if (!response.ok) throw new Error('Failed to create account');
+        if (!response.ok) await handleError(response, 'Failed to create account');
         return response.json();
     },
 
@@ -52,7 +66,7 @@ export const api = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: parseFloat(amount), date: new Date().toISOString() })
         });
-        if (!response.ok) throw new Error(await response.text() || 'Deposit failed');
+        if (!response.ok) await handleError(response, 'Deposit failed');
         return response.json();
     },
 
@@ -62,7 +76,7 @@ export const api = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: parseFloat(amount), date: new Date().toISOString() })
         });
-        if (!response.ok) throw new Error(await response.text() || 'Withdrawal failed');
+        if (!response.ok) await handleError(response, 'Withdrawal failed');
         return response.json();
     }
 };

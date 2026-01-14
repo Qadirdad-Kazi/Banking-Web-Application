@@ -77,12 +77,15 @@ public class AccountService {
     public Account withdraw(String accountNumber, Date date, Double amount) {
         Account account = getAccountOrThrow(accountNumber);
 
-        if (amount <= 0) {
+        if (amount == null || amount <= 0) {
             throw new IllegalArgumentException("Withdrawal amount must be positive.");
         }
 
         // Formal Constraint Check
-        if ((account.getBalance() + account.getLimit()) < amount) {
+        Double currentBalance = account.getBalance() != null ? account.getBalance() : 0.0;
+        Double limit = account.getLimit() != null ? account.getLimit() : 0.0;
+
+        if ((currentBalance + limit) < amount) {
             throw new IllegalStateException("Insufficient funds (including overdraft limit). Withdrawal denied.");
         }
 
@@ -91,7 +94,7 @@ public class AccountService {
         // Invariant: New Balance + Limit >= 0
         // (Balance - Amount) + Limit >= 0 => Balance + Limit >= Amount. (Same as above)
 
-        account.setBalance(account.getBalance() - amount);
+        account.setBalance(currentBalance - amount);
 
         Transaction transaction = new Transaction();
         transaction.setAccount(account);
